@@ -1,0 +1,7 @@
+Disease: flu
+
+Common symptoms include:
+sore throat, cough, vomiting, headache, nausea, diarrhea, fever, ache all over, chills, coryza
+
+This information is for medical education purposes.
+Consult a healthcare professional for diagnosis and treatment.

@@ -1,0 +1,80 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import MainLayout from './layouts/MainLayout';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import Spinner from './components/common/Spinner';
+
+const LoginPage       = lazy(() => import('./pages/LoginPage'));
+const RegisterPage    = lazy(() => import('./pages/RegisterPage'));
+const DashboardPage   = lazy(() => import('./pages/DashboardPage'));
+const PatientsPage    = lazy(() => import('./pages/PatientsPage'));
+const EMRPage         = lazy(() => import('./pages/EMRPage'));
+const PredictionPage  = lazy(() => import('./pages/PredictionPage'));
+const LabReportPage   = lazy(() => import('./pages/LabReportPage'));
+const AssistantPage   = lazy(() => import('./pages/AssistantPage'));
+const DischargePage   = lazy(() => import('./pages/DischargePage'));
+const ProfilePage     = lazy(() => import('./pages/ProfilePage'));
+const NotFoundPage    = lazy(() => import('./pages/NotFoundPage'));
+
+const PageLoader = () => (
+  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F0F4FF' }}>
+    <Spinner size="lg" label="Loading..." />
+  </div>
+);
+
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <PageLoader />;
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const PublicRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <PageLoader />;
+  return user ? <Navigate to="/" replace /> : children;
+};
+
+const privatePages = [
+  { path: '/',            Page: DashboardPage  },
+  { path: '/patients',    Page: PatientsPage   },
+  { path: '/emr',         Page: EMRPage        },
+  { path: '/predictions', Page: PredictionPage },
+  { path: '/lab-reports', Page: LabReportPage  },
+  { path: '/assistant',   Page: AssistantPage  },
+  { path: '/discharge',   Page: DischargePage  },
+  { path: '/profile',     Page: ProfilePage    },
+];
+
+function AppRoutes() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/login"    element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+        {privatePages.map(({ path, Page }) => (
+          <Route key={path} path={path} element={
+            <PrivateRoute>
+              <MainLayout>
+                <ErrorBoundary>
+                  <Page />
+                </ErrorBoundary>
+              </MainLayout>
+            </PrivateRoute>
+          }/>
+        ))}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}

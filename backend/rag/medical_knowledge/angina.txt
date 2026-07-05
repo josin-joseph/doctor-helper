@@ -1,0 +1,7 @@
+Disease: angina
+
+Common symptoms include:
+shortness of breath, sharp chest pain, dizziness, chest tightness, palpitations, irregular heartbeat, hot flashes, arm pain, increased heart rate, lower body pain, sweating
+
+This information is for medical education purposes.
+Consult a healthcare professional for diagnosis and treatment.

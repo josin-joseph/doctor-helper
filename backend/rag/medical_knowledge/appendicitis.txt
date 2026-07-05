@@ -1,0 +1,7 @@
+Disease: appendicitis
+
+Common symptoms include:
+sharp abdominal pain, vomiting, nausea, diarrhea, lower abdominal pain, burning abdominal pain, decreased appetite, side pain, fever, upper abdominal pain, stomach bloating
+
+This information is for medical education purposes.
+Consult a healthcare professional for diagnosis and treatment.
